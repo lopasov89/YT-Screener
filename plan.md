@@ -3,7 +3,7 @@
 npm init -y || npm i
 npx eslint --init
 npm i -D nodemon
-npm i express morgan dotenv hbs sequelize sequelize-cli pg pg-hstore bcrypt session-file-store http-errors
+npm i express morgan dotenv hbs sequelize sequelize-cli pg pg-hstore bcrypt express-session session-file-store
 
 2. добавляем правила в eslint  
 'no-console': 0,
