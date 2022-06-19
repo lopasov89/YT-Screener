@@ -9,7 +9,7 @@ const checkIsSession = (req, res, next) => {
 // проверка на то нет ли у юзера сессия
 const checkIsNotSession = (req, res, next) => {
   if (!req.session.userId) {
-    res.redirect('/user/login')
+    res.redirect('/')
   } else {
     next()
   }
