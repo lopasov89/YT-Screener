@@ -3,7 +3,7 @@
 npm init -y || npm i
 npx eslint --init
 npm i -D nodemon
-npm i express morgan dotenv hbs sequelize sequelize-cli pg pg-hstore bcrypt express-session session-file-store multer moment
+npm i express morgan dotenv hbs sequelize sequelize-cli pg pg-hstore bcrypt express-session session-file-store (multer moment - если нужны)
 
 2. добавляем правила в eslint  
 'no-console': 0,
@@ -26,17 +26,27 @@ npx gitignore node
 
 8. Также в проекте могут понадобиться папки "partials", "public" (пути прописываются в app.js)
 
-9. БД инициализируем 
+9. БД 
+9.1 Инициализируем (если нет папки db в проекте)
 npx sequelize init
-9.1 Создаем базу 
+9.1.1 Меняем настройки базы (при необходимости в database.json) на
+{
+  "development": {
+    "use_env_variable": "DATABASE_URL"
+  },
+  "production": {
+    "use_env_variable": "DATABASE_URL"
+  }
+}
+9.2 Создаем базу 
 npx sequelize db:create 
-9.2 Создаем модели
+9.3 Создаем модели
 npx sequelize model:generate --name Post --attributes title:string,image_url:string
-9.3 Прописываем внешние ключи и настройки полей в моделях
-9.4 Прописываем ассоциации в миграциях
-9.5 Накатываем миграции
+9.4 Прописываем внешние ключи и настройки полей в моделях
+9.5 Прописываем ассоциации в миграциях
+9.6 Накатываем миграции
 npx sequelize db:migrate 
-9.6 Проверяем БД в beekeeper
+9.7 Проверяем БД в beekeeper
 
 10. Чтобы все обработчики были логично распредены по сущностям - их лучше вынести в отдельные файлы, которые поместить в папку "routes" (создав ее)
 10.1 Начинаем прописывать обработчики (ручки) запросов. 
