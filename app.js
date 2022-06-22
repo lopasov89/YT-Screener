@@ -1,20 +1,23 @@
+/* eslint-disable max-len */
 // ! Импортируем библиотеки
 require('dotenv').config() // подключили dotenv
 const express = require('express') // подключили экспресс
 const path = require('path') // подключили модуль path
 const hbs = require('hbs') // подключили hbs
 const morgan = require('morgan') // подключили логгер morgan
-const session = require('express-session'); // подключили модуль для работы с сессиями
-const FileStore = require('session-file-store')(session); // подключили модуль для хранения сессий
-const dbCheck = require('./db/dbCheck'); // подключение скрипта проверки соединения с БД
+const session = require('express-session') // подключили модуль для работы с сессиями
+const FileStore = require('session-file-store')(session) // подключили модуль для хранения сессий
+const dbCheck = require('./db/dbCheck') // подключение скрипта проверки соединения с БД
 
 // ! Импортируем созданные в отдельный файлах роуты.
-// -->Тут пишем require роутов<--
+const indexRouter = require('./routes/index')
+const userRouter = require('./routes/user')
+const searchRouter = require('./routes/search')
 
 // ! Инициализируем приложение
 const app = express() // создали экземпляр сервера
 const PORT = process.env.PORT || 3002 // создали константу с портом
-dbCheck(); // вызов функции проверки соединения с базоый данных
+dbCheck() // вызов функции проверки соединения с базоый данных
 
 // ! Задаем конфигурацию для работы с сессиями
 const sessionConfig = {
@@ -37,7 +40,7 @@ app.use(morgan('dev')) // Подключаем middleware morgan с режимо
 app.use(express.static(path.join(process.env.PWD, 'public'))) // Подключаем middleware, которое сообщает epxress, что в папке "ПапкаПроекта/public" будут находится статические файлы, т.е. файлы доступные для скачивания из других приложений.
 app.use(express.urlencoded({ extended: true })) // Подключаем middleware, которое позволяет читать содержимое body из HTTP-запросов типа POST, PUT и DELETE.
 app.use(express.json()) // Подключаем middleware, которое позволяет читать переменные JavaScript, сохранённые в формате JSON в body HTTP-запроса.
-app.use(session(sessionConfig)) // Подключаем middleware для использования сессий в приложений и передаем ей конфигурацию 
+app.use(session(sessionConfig)) // Подключаем middleware для использования сессий в приложений и передаем ей конфигурацию
 
 // ! мидлварка для того чтобы присвоить локальной переменной имя и id юзера из сессии
 app.use((req, res, next) => {
@@ -49,10 +52,12 @@ app.use((req, res, next) => {
 })
 
 // ! Подключаем обработку запросов
-// -->Тут пишем роуты<--
+app.use('/', indexRouter)
+app.use('/user', userRouter)
+app.use('/search', searchRouter)
 
 // ! Обработка ненайденных страниц
-// Если HTTP-запрос дошёл до этой строчки, значит ни один из ранее встречаемых рутов не ответил на запрос. 
+// Если HTTP-запрос дошёл до этой строчки, значит ни один из ранее встречаемых рутов не ответил на запрос.
 // Это значит, что искомого раздела просто нет на сайте.
 // Создаём небольшое middleware, которое отображает страницу с ошибкой
 app.get('*', (req, res) => {
@@ -63,6 +68,6 @@ app.get('*', (req, res) => {
 })
 
 // ! Начинаем слушать порт для запуска сервера
-app.listen(PORT, () => { 
+app.listen(PORT, () => {
   console.log(`Сервер запущен на порте ${PORT}`)
 })

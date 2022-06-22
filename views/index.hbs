@@ -1,0 +1,24 @@
+<script defer src="/js/search.js"></script>
+<script defer src="/js/save_statistic.js"></script>
+<h1>Главная страница</h1>
+
+<form id="formSearch">
+<input class="form-control" name="phrase" type="text" placeholder="Search phrase" aria-label="default input example" required>
+<br>
+<input class="form-control" name="number" type="text" placeholder="Number of results (5 default)" aria-label="default input example">
+<br>
+<label>Select order to</label>
+<select required name="order" class="form-select" aria-label="Default select example">
+  <option selected>viewCount</option>
+  <option value="date">date</option>
+  <option value="rating">rating</option>
+  <option value="title">title</option>
+  <option value="relevance">relevance</option>
+</select> <br>
+<button type="submit" id="ytBtn" class="btn btn-info">Get statistics</button>
+</form>
+<br>
+<br>
+<button type="submit" id="btnSaveResults" class="btn btn-info">Save statistics</button>
+
+<div id="ytStat" class="my-4 row"></div>

@@ -41,7 +41,7 @@ npx sequelize init
 9.2 Создаем базу 
 npx sequelize db:create 
 9.3 Создаем модели
-npx sequelize model:generate --name Post --attributes title:string,image_url:string
+npx sequelize model:generate --name Result --attributes title:string,url:string,views:integer,likes:integer,comments:integer,search_id:integer
 9.4 Прописываем внешние ключи и настройки полей в моделях
 9.5 Прописываем ассоциации в миграциях
 9.6 Накатываем миграции
