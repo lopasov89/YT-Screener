@@ -6,9 +6,6 @@ router.post('/', async (req, res) => {
   // ! Принимаю массив с объектами
   const results = req.body
   // console.log('results==>', results)
-  // ! Нахожу все поиски и забираю id поледнего
-  const allSearches = await Search.findAll({ raw: true })
-  const { id } = allSearches[allSearches.length - 1]
   // console.log('id===>', id);
   for (let i = 0; i < results.length; i++) {
     await Result.create({ 

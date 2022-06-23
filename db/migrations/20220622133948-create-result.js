@@ -11,6 +11,9 @@ module.exports = {
       title: {
         type: Sequelize.STRING
       },
+      videoId: {
+        type: Sequelize.STRING
+      },
       url: {
         type: Sequelize.STRING
       },

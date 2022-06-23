@@ -1,12 +1,17 @@
-console.log('Клиентский скрипт')
-
+console.log('Клиентский скрипт поиска')
+// ! Находим нашу форму
 const ytFormSearch = document.querySelector('#formSearch')
+
+// !Находим наш блок куда будем вставлять карточки
 const ytStat = document.querySelector('#ytStat')
 
 const youtubeKey = 'AIzaSyCqKBbGra_1Sb4TFcdQqQMLu8lqbg-gPvo'
 
+// ! Начинаем слушать событие
 ytFormSearch.addEventListener('submit', async (event) => {
   event.preventDefault()
+
+  ytStat.innerHTML = ''
 
   // ! Собираем данные из полей ввода
   const query = event.target.query.value
@@ -31,48 +36,42 @@ ytFormSearch.addEventListener('submit', async (event) => {
       const resultToStatistic = await responseToStatistic.json()
       // console.log(resultToStatistic);
       // ! Добавляем в объекты с видео данные о статистике
-      resultToSearch.items[i].views = resultToStatistic.items[0].statistics.viewCount;
-      resultToSearch.items[i].likes = resultToStatistic.items[0].statistics.likeCount;
-      resultToSearch.items[i].comments = resultToStatistic.items[0].statistics.commentCount || 'unknown';
+      resultToSearch.items[i].views = resultToStatistic.items[0].statistics.viewCount
+      resultToSearch.items[i].likes = resultToStatistic.items[0].statistics.likeCount || 0
+      resultToSearch.items[i].comments = resultToStatistic.items[0].statistics.commentCount || 0
 
       // ! Отрисовываем карточку по каждому видео
-      const resSearch = `<div class="card mb-3" style="max-width: 540px;">
+      const resSearch = `<div class="card mb-3 ${resultToSearch.items[i].id.videoId}" style="max-width: 540px;">
       <div class="row g-0">
         <div class="col-md-4">
           <a href="https://www.youtube.com/watch?v=${resultToSearch.items[i].id.videoId}" target="_blank"> <img src="${resultToSearch.items[i].snippet.thumbnails.medium.url}" class="img-fluid rounded-start" alt="${resultToSearch.items[i].snippet.title}"></a>
+          <button data-id=${resultToSearch.items[i].id.videoId} type="button" class="btn btn-danger deleteButton">Delete</button>
         </div>
         <div class="col-md-8">
           <div class="card-body">
             <h5 class="card-title">${resultToSearch.items[i].snippet.title}</h5> <br>
             <p class="card-text">Views: ${resultToStatistic.items[0].statistics.viewCount}</p>
-            <p class="card-text">Likes: ${resultToStatistic.items[0].statistics.likeCount}</p>
-            <p class="card-text">Comments: ${resultToStatistic.items[0].statistics.commentCount || 'unknown'}</p>
+            <p class="card-text">Likes: ${resultToStatistic.items[0].statistics.likeCount || 0}</p>
+            <p class="card-text">Comments: ${resultToStatistic.items[0].statistics.commentCount || 0}</p>
             <p class="card-text"><small class="text-muted">Created at: ${resultToSearch.items[i].snippet.publishedAt.slice(0, 10)}</small></p>
           </div>
         </div>
-      </div>
-    </div>`
+      </div>`
       ytStat.insertAdjacentHTML('beforeend', resSearch)
     }
   }
-  // console.log('resultToSearch2===>', resultToSearch)
-  // ! Отправляем fetch для занесения поиска в базу
-  await fetch('/search', {
+  // ! Вытягиваем массив объектов результатов поиска
+  const { items } = resultToSearch
+  // ! Отправляем fetch для занесения поиска и результатов в базу
+  const response = await fetch('/search', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ query, amount, order }),
+    body: JSON.stringify({ query, amount, order, items }),
   })
 
-  // ! Отправляем fetch для занесения результатов поиска в базу
-  const { items } = resultToSearch
-  // console.log('resultToSearch===>', resultToSearch);
-  await fetch('/result', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(items),
-  })
+  // if (response.ok) {
+  //   console.log('response===>', response)
+  // }
 })

@@ -1,13 +1,43 @@
+/* eslint-disable no-restricted-syntax */
 const router = require('express').Router()
-const { Search } = require('../db/models')
+const { Search, Result } = require('../db/models')
 
 router.post('/', async (req, res) => {
-  // console.log('req.body==>',req.body)
-  const { query, amount, order } = req.body
-  await Search.create({
+  // ! Достаем из тела запроса необходимые данные
+  const { query, amount, order, items } = req.body
+
+  // ! Заносим в базу поиск
+  const currentSearch = await Search.create({
     query, amount, order, user_id: req.session.userId,
   })
-  res.redirect('/')
+
+  // ! Заносим в базу результаты поиска
+  for await (let item of items) {
+    Result.create({
+      title: item.snippet.title,
+      videoId: item.id.videoId,
+      url: `https://www.youtube.com/watch?v=${item.id.videoId}`,
+      views: item.views,
+      likes: item.likes,
+      comments: item.comments,
+      download: item.snippet.publishedAt.slice(0, 10),
+      search_id: currentSearch.id,
+    })
+  }
+
+  res.sendStatus(200)
+})
+
+router.delete('/', async (req, res) => {
+  const { id } = req.body
+  // ! Нахожу все поиски и забираю id поледнего
+  const allSearches = await Search.findAll({ raw: true })
+  const lastSearchId = allSearches[allSearches.length - 1].id
+
+  // ! Нахожу нужный результат и удаляю из таблицы
+  const deleteCard = await Result.findOne({ where: { videoId: id, search_id: lastSearchId } })
+  deleteCard.destroy()
+  res.sendStatus(200)
 })
 
 module.exports = router
