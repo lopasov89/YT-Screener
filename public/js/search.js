@@ -11,7 +11,12 @@ const youtubeKey = 'AIzaSyCqKBbGra_1Sb4TFcdQqQMLu8lqbg-gPvo'
 ytFormSearch?.addEventListener('submit', async (event) => {
   event.preventDefault()
 
+  // ! Очищаем предыдущие результаты поиска
   ytStat.innerHTML = ''
+
+  if (document.querySelector('#btn-save')) {
+    document.querySelector('#btn-save').remove()
+  }
 
   // ! Собираем данные из полей ввода
   const query = event.target.query.value
@@ -70,8 +75,19 @@ ytFormSearch?.addEventListener('submit', async (event) => {
     },
     body: JSON.stringify({ query, amount, order, items }),
   })
+  // ! Добавляем кнопку скачивания результатов текущего поиска
+  if (response.ok) {
+    // console.log('response===>', response)
+    const result = await response.json()
+    const { fileCurrentStat } = result
+    console.log('fileCurrentStat==>', fileCurrentStat)
+    const linkList = document.createElement('a')
+    linkList.href = fileCurrentStat
+    linkList.id = 'btn-save'
+    linkList.classList.add('btn')
+    linkList.classList.add('btn-info')
+    linkList.innerText = 'Save statistics(csv)'
 
-  // if (response.ok) {
-  //   console.log('response===>', response)
-  // }
+    ytStat.before(linkList)
+  }
 })

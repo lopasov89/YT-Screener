@@ -33,9 +33,11 @@ router.post('/', async (req, res) => {
   results.forEach((element) => {
     stringStat += `Video ID: ${element.videoId}, Title: ${element.title}, URL: ${element.url}, Views: ${element.views}, Likes: ${element.likes}, Comments: ${element.comments}, Download: ${element.download}\n`
   })
-  const fileCurrentStat = `/searches/searchId:${currentSearch.id}-searchPhrase:${currentSearch.query.toUpperCase()}.csv`
+  const fileCurrentStat = `/searches/searchID:${currentSearch.id}-searchPhrase:${currentSearch.query.toUpperCase()}.csv`
   await fs.writeFile(`./public${fileCurrentStat}`, stringStat)
-  res.sendStatus(200)
+
+  // ! ОТправляем на фронт путь до файла
+  res.json({ fileCurrentStat })
 })
 
 router.delete('/', async (req, res) => {
