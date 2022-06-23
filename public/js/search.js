@@ -5,7 +5,7 @@ const ytFormSearch = document.querySelector('#formSearch')
 // !Находим наш блок куда будем вставлять карточки
 const ytStat = document.querySelector('#ytStat')
 
-const youtubeKey = 'AIzaSyCqKBbGra_1Sb4TFcdQqQMLu8lqbg-gPvo'
+const youtubeKey = 'AIzaSyBS2ou8hU1X0_KsF2dYzJZaysBfcHIrfkU'
 
 // ! Начинаем слушать событие
 ytFormSearch?.addEventListener('submit', async (event) => {
@@ -75,19 +75,18 @@ ytFormSearch?.addEventListener('submit', async (event) => {
     },
     body: JSON.stringify({ query, amount, order, items }),
   })
-  // ! Добавляем кнопку скачивания результатов текущего поиска
+  // ! Получаем ответ с бэка
   if (response.ok) {
-    // console.log('response===>', response)
     const result = await response.json()
     const { fileCurrentStat } = result
-    console.log('fileCurrentStat==>', fileCurrentStat)
+    // ! Добавляем кнопку скачивания результатов текущего поиска
     const linkList = document.createElement('a')
     linkList.href = fileCurrentStat
     linkList.id = 'btn-save'
     linkList.classList.add('btn')
     linkList.classList.add('btn-info')
     linkList.innerText = 'Save statistics(csv)'
-
+    // ! Вставляем кнопку на страницу
     ytStat.before(linkList)
   }
 })

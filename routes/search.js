@@ -28,7 +28,7 @@ router.post('/', async (req, res) => {
 
   // ! Создаем csv файл с отчетом
   const results = await Result.findAll(({ where: { search_id: currentSearch.id }, raw: true }))
-  console.log('results==>', results)
+  console.log('results1==>', results)
   let stringStat = ''
   results.forEach((element) => {
     stringStat += `Video ID: ${element.videoId}, Title: ${element.title}, URL: ${element.url}, Views: ${element.views}, Likes: ${element.likes}, Comments: ${element.comments}, Download: ${element.download}\n`
@@ -36,19 +36,32 @@ router.post('/', async (req, res) => {
   const fileCurrentStat = `/searches/searchID:${currentSearch.id}-searchPhrase:${currentSearch.query.toUpperCase()}.csv`
   await fs.writeFile(`./public${fileCurrentStat}`, stringStat)
 
-  // ! ОТправляем на фронт путь до файла
+  // ! Отправляем на фронт путь до файла
   res.json({ fileCurrentStat })
 })
 
 router.delete('/', async (req, res) => {
   const { id } = req.body
+
   // ! Нахожу все поиски и забираю id поледнего
   const allSearches = await Search.findAll({ raw: true })
-  const lastSearchId = allSearches[allSearches.length - 1].id
+  const lastSearch = allSearches[allSearches.length - 1]
 
   // ! Нахожу нужный результат и удаляю из таблицы
-  const deleteCard = await Result.findOne({ where: { videoId: id, search_id: lastSearchId } })
+  const deleteCard = await Result.findOne({ where: { videoId: id, search_id: lastSearch.id } })
   deleteCard.destroy()
+
+  // ! Перезаписываю данные в текущем отчете
+  const results = await Result.findAll(({ where: { search_id: lastSearch.id }, raw: true }))
+  console.log('results2==>', results)
+  let stringStat = ''
+  results.forEach((element) => {
+    stringStat += `Video ID: ${element.videoId}, Title: ${element.title}, URL: ${element.url}, Views: ${element.views}, Likes: ${element.likes}, Comments: ${element.comments}, Download: ${element.download}\n`
+  })
+  const fileCurrentStat = `/searches/searchID:${lastSearch.id}-searchPhrase:${lastSearch.query.toUpperCase()}.csv`
+  await fs.writeFile(`./public${fileCurrentStat}`, stringStat)
+
+  // !Отправляю на фронт ответ
   res.sendStatus(200)
 })
 
