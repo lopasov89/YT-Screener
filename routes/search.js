@@ -13,7 +13,7 @@ router.post('/', async (req, res) => {
 
   // ! Заносим в базу результаты поиска
   for await (let item of items) {
-    Result.create({
+    await Result.create({
       title: item.snippet.title,
       videoId: item.id.videoId,
       url: `https://www.youtube.com/watch?v=${item.id.videoId}`,
@@ -26,9 +26,7 @@ router.post('/', async (req, res) => {
   }
 
   // ! Создаем csv файл с отчетом
-  console.log('currentSearch.id==>', currentSearch.id)
   const results = await Result.findAll(({ where: { search_id: currentSearch.id }, raw: true }))
-  console.log('results==>', results)
   res.sendStatus(200)
 })
 
