@@ -25,6 +25,10 @@ router.post('/', async (req, res) => {
     })
   }
 
+  // ! Создаем csv файл с отчетом
+  console.log('currentSearch.id==>', currentSearch.id)
+  const results = await Result.findAll(({ where: { search_id: currentSearch.id }, raw: true }))
+  console.log('results==>', results)
   res.sendStatus(200)
 })
 
