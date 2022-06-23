@@ -1,4 +1,4 @@
-console.log('Клиентский скрипт поиска')
+// console.log('Клиентский скрипт поиска')
 // ! Находим нашу форму
 const ytFormSearch = document.querySelector('#formSearch')
 
@@ -8,7 +8,7 @@ const ytStat = document.querySelector('#ytStat')
 const youtubeKey = 'AIzaSyCqKBbGra_1Sb4TFcdQqQMLu8lqbg-gPvo'
 
 // ! Начинаем слушать событие
-ytFormSearch.addEventListener('submit', async (event) => {
+ytFormSearch?.addEventListener('submit', async (event) => {
   event.preventDefault()
 
   ytStat.innerHTML = ''

@@ -51,6 +51,8 @@ app.use((req, res, next) => {
   next()
 })
 
+// app.locals.ytApiKey = process.env.API_KEY
+
 // ! Подключаем обработку запросов
 app.use('/', indexRouter)
 app.use('/user', userRouter)

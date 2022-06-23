@@ -1,4 +1,4 @@
-console.log('Клиентский скрипт удаления')
+// console.log('Клиентский скрипт удаления')
 
 // ! Находим наш блок со всеми карточками
 const ytStatBlock = document.querySelector('#ytStat')

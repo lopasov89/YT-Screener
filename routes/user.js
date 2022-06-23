@@ -2,6 +2,7 @@ const router = require('express').Router()
 const bcrypt = require('bcrypt')
 const { User } = require('../db/models')
 const { checkIsSession, checkIsNotSession } = require('../middlewares/check.middleware')
+const mailer = require('../middlewares/mailer.middleware');
 
 const saltRounds = 10
 
@@ -32,7 +33,20 @@ router.post('/register', async (req, res) => {
     })
     // ! сессия создастся здесь
     req.session.userName = newUser.name // добавляем в сессию имя нового юзера
-    req.session.userId = newUser.id // добавляем в сессию id найденного юзера
+    req.session.userId = newUser.id // добавляем в сессию id найденного юзер
+
+    // ! тут начинается логика отправки сообщения
+    const message = {
+      to: email,
+      subject: 'Добро пожаловать в сервис YT Screener',
+      html: `
+        <h2>${name}, поздравляем, Вы успешно зарегистрировались на нашем сайте!</h2>
+        
+        <i>Ваш логин: ${email}</i>
+        <i>Ваш пароль: ${password}</i>
+        `,
+    }
+    mailer(message)
 
     res.redirect('/')
   } catch (error) {
