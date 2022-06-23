@@ -37,8 +37,8 @@ ytFormSearch?.addEventListener('submit', async (event) => {
       // console.log(resultToStatistic);
       // ! Добавляем в объекты с видео данные о статистике
       resultToSearch.items[i].views = resultToStatistic.items[0].statistics.viewCount
-      resultToSearch.items[i].likes = resultToStatistic.items[0].statistics.likeCount || 0
-      resultToSearch.items[i].comments = resultToStatistic.items[0].statistics.commentCount || 0
+      resultToSearch.items[i].likes = resultToStatistic.items[0].statistics.likeCount || '0'
+      resultToSearch.items[i].comments = resultToStatistic.items[0].statistics.commentCount || '0'
 
       // ! Отрисовываем карточку по каждому видео
       const resSearch = `<div class="card mb-3 ${resultToSearch.items[i].id.videoId}" style="max-width: 540px;">
@@ -51,8 +51,8 @@ ytFormSearch?.addEventListener('submit', async (event) => {
           <div class="card-body">
             <h5 class="card-title">${resultToSearch.items[i].snippet.title}</h5> <br>
             <p class="card-text">Views: ${resultToStatistic.items[0].statistics.viewCount}</p>
-            <p class="card-text">Likes: ${resultToStatistic.items[0].statistics.likeCount || 0}</p>
-            <p class="card-text">Comments: ${resultToStatistic.items[0].statistics.commentCount || 0}</p>
+            <p class="card-text">Likes: ${resultToStatistic.items[0].statistics.likeCount || '0'}</p>
+            <p class="card-text">Comments: ${resultToStatistic.items[0].statistics.commentCount || '0'}</p>
             <p class="card-text"><small class="text-muted">Created at: ${resultToSearch.items[i].snippet.publishedAt.slice(0, 10)}</small></p>
           </div>
         </div>

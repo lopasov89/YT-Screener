@@ -1,6 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 const router = require('express').Router()
 const { Search, Result } = require('../db/models')
+const fs = require('fs').promises
 
 router.post('/', async (req, res) => {
   // ! Достаем из тела запроса необходимые данные
@@ -27,6 +28,13 @@ router.post('/', async (req, res) => {
 
   // ! Создаем csv файл с отчетом
   const results = await Result.findAll(({ where: { search_id: currentSearch.id }, raw: true }))
+  console.log('results==>', results)
+  let stringStat = ''
+  results.forEach((element) => {
+    stringStat += `Video ID: ${element.videoId}, Title: ${element.title}, URL: ${element.url}, Views: ${element.views}, Likes: ${element.likes}, Comments: ${element.comments}, Download: ${element.download}\n`
+  })
+  const fileCurrentStat = `/searches/searchId:${currentSearch.id}-searchPhrase:${currentSearch.query.toUpperCase()}.csv`
+  await fs.writeFile(`./public${fileCurrentStat}`, stringStat)
   res.sendStatus(200)
 })
 

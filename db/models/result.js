@@ -19,9 +19,9 @@ module.exports = (sequelize, DataTypes) => {
     title: DataTypes.STRING,
     videoId: DataTypes.STRING,
     url: DataTypes.STRING,
-    views: DataTypes.INTEGER,
-    likes: DataTypes.INTEGER,
-    comments: DataTypes.INTEGER,
+    views: DataTypes.STRING,
+    likes: DataTypes.STRING,
+    comments: DataTypes.STRING,
     download: DataTypes.STRING,
     search_id: DataTypes.INTEGER,
   }, {

@@ -18,13 +18,13 @@ module.exports = {
         type: Sequelize.STRING
       },
       views: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       likes: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       comments: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       download: {
         type: Sequelize.STRING
