@@ -23,6 +23,9 @@ module.exports = {
       comments: {
         type: Sequelize.INTEGER
       },
+      download: {
+        type: Sequelize.STRING
+      },
       search_id: {
         type: Sequelize.INTEGER,
         references: {

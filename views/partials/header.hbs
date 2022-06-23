@@ -11,20 +11,20 @@
       <ul class="navbar-nav">
         {{#if userId}}
         <li class="nav-item">
-          <a class="nav-link" href="/user/logout">Выход</a>
-        </li>
-        {{!-- <li class="nav-item">
-          <a class="nav-link" href="/books/new">Добавить книгу</a>
+          <a class="nav-link" href="/user/logout">Logout</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="/books/new">My searches</a>
+        </li>
+        {{!-- <li class="nav-item">
           <a class="nav-link" href="/books/">Мои книги</a>
         </li> --}}
         {{else}}
         <li class="nav-item">
-          <a class="nav-link" href="/user/register">Зарегистрироваться</a>
+          <a class="nav-link" href="/user/register">Registration</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/user/login">Войти</a>
+          <a class="nav-link" href="/user/login">Login</a>
         </li>
         {{/if}}
       </ul>

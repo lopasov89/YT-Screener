@@ -13,6 +13,7 @@ const dbCheck = require('./db/dbCheck') // подключение скрипта
 const indexRouter = require('./routes/index')
 const userRouter = require('./routes/user')
 const searchRouter = require('./routes/search')
+const resultRouter = require('./routes/result')
 
 // ! Инициализируем приложение
 const app = express() // создали экземпляр сервера
@@ -55,6 +56,7 @@ app.use((req, res, next) => {
 app.use('/', indexRouter)
 app.use('/user', userRouter)
 app.use('/search', searchRouter)
+app.use('/result', resultRouter)
 
 // ! Обработка ненайденных страниц
 // Если HTTP-запрос дошёл до этой строчки, значит ни один из ранее встречаемых рутов не ответил на запрос.

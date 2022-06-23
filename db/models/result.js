@@ -21,7 +21,8 @@ module.exports = (sequelize, DataTypes) => {
     views: DataTypes.INTEGER,
     likes: DataTypes.INTEGER,
     comments: DataTypes.INTEGER,
-    search_id: DataTypes.INTEGER
+    download: DataTypes.STRING,
+    search_id: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'Result',
