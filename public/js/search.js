@@ -14,6 +14,7 @@ ytFormSearch?.addEventListener('submit', async (event) => {
   // ! Очищаем предыдущие результаты поиска
   ytStat.innerHTML = ''
 
+  // ! Удаляем кнопку скачивания статистики
   if (document.querySelector('#btn-save')) {
     document.querySelector('#btn-save').remove()
   }
