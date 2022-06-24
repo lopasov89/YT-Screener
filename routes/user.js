@@ -40,7 +40,7 @@ router.post('/register', async (req, res) => {
       to: email,
       subject: 'Добро пожаловать в сервис YT Screener',
       html: `
-        <h2>${name}, поздравляем, Вы успешно зарегистрировались на нашем сайте!</h2>
+        <h2>${name.toUpperCase()}, поздравляем, Вы успешно зарегистрировались на нашем сайте!</h2>
         
         <i>Ваш логин: ${email}</i>
         <i>Ваш пароль: ${password}</i>

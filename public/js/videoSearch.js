@@ -31,7 +31,7 @@ ytFormSearch?.addEventListener('submit', async (event) => {
   const resultToSearch = await responseToSearch.json()
   // console.log('resultToSearch1===>', resultToSearch)
 
-  // ! Дальше нужно собрать статисстику по каждому видео + отрисовать карточки
+  // ! Дальше нужно собрать статистику по каждому видео + отрисовать карточки
 
   if (resultToSearch.items && resultToSearch.items.length > 0) {
     for (let i = 0; i < resultToSearch.items.length; i++) {
@@ -69,12 +69,14 @@ ytFormSearch?.addEventListener('submit', async (event) => {
   // ! Вытягиваем массив объектов результатов поиска
   const { items } = resultToSearch
   // ! Отправляем fetch для занесения поиска и результатов в базу
-  const response = await fetch('/search', {
+  const response = await fetch('/videos', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ query, amount, order, items }),
+    body: JSON.stringify({
+      query, amount, order, items,
+    }),
   })
   // ! Получаем ответ с бэка
   if (response.ok) {

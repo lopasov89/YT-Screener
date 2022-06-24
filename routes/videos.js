@@ -1,15 +1,28 @@
 /* eslint-disable no-restricted-syntax */
 const router = require('express').Router()
-const { Search, Result } = require('../db/models')
 const fs = require('fs').promises
+const path = require('path') // подключили модуль path
+const { Search, Result } = require('../db/models')
+
+router.get('/', async (req, res) => {
+  res.render('videoSearch')
+})
 
 router.post('/', async (req, res) => {
   // ! Достаем из тела запроса необходимые данные
   const { query, amount, order, items } = req.body
 
+  // ! Достаем все поиски из папки и забираем имя последнего для записи в базу
+  const searchFiles = await fs.readdir(path.join(process.env.PWD, 'public', 'searches'))
+  const link = `/searches/searchID:${searchFiles.length + 1}-searchPhrase:${query.toUpperCase()}.csv`
+
   // ! Заносим в базу поиск
   const currentSearch = await Search.create({
-    query, amount, order, user_id: req.session.userId,
+    query,
+    amount,
+    order,
+    link,
+    user_id: req.session.userId,
   })
 
   // ! Заносим в базу результаты поиска
@@ -28,13 +41,17 @@ router.post('/', async (req, res) => {
 
   // ! Создаем csv файл с отчетом
   const results = await Result.findAll(({ where: { search_id: currentSearch.id }, raw: true }))
-  console.log('results1==>', results)
+
   let stringStat = ''
-  results.forEach((element) => {
-    stringStat += `Video ID: ${element.videoId}, Title: ${element.title}, URL: ${element.url}, Views: ${element.views}, Likes: ${element.likes}, Comments: ${element.comments}, Download: ${element.download}\n`
-  })
+  for (let i = 0; i < results.length; i++) {
+    if (i === 0) {
+      stringStat += 'Video ID; Title; URL; Views; Likes; Comments; Download \n'
+    }
+    stringStat += `${results[i].videoId}; ${results[i].title}; ${results[i].url}; ${results[i].views}; ${results[i].likes}; ${results[i].comments}; ${results[i].download}\n`
+  }
+
   const fileCurrentStat = `/searches/searchID:${currentSearch.id}-searchPhrase:${currentSearch.query.toUpperCase()}.csv`
-  await fs.writeFile(`./public${fileCurrentStat}`, stringStat)
+  await fs.writeFile(path.join(process.env.PWD, 'public', `${fileCurrentStat}`), stringStat)
 
   // ! Отправляем на фронт путь до файла
   res.json({ fileCurrentStat })
@@ -53,15 +70,18 @@ router.delete('/', async (req, res) => {
 
   // ! Перезаписываю данные в текущем отчете
   const results = await Result.findAll(({ where: { search_id: lastSearch.id }, raw: true }))
-  console.log('results2==>', results)
-  let stringStat = ''
-  results.forEach((element) => {
-    stringStat += `Video ID: ${element.videoId}, Title: ${element.title}, URL: ${element.url}, Views: ${element.views}, Likes: ${element.likes}, Comments: ${element.comments}, Download: ${element.download}\n`
-  })
-  const fileCurrentStat = `/searches/searchID:${lastSearch.id}-searchPhrase:${lastSearch.query.toUpperCase()}.csv`
-  await fs.writeFile(`./public${fileCurrentStat}`, stringStat)
 
-  // !Отправляю на фронт ответ
+  let stringStat = ''
+  for (let i = 0; i < results.length; i++) {
+    if (i === 0) {
+      stringStat += 'Video ID; Title; URL; Views; Likes; Comments; Download \n'
+    }
+    stringStat += `${results[i].videoId}; ${results[i].title}; ${results[i].url}; ${results[i].views}; ${results[i].likes}; ${results[i].comments}; ${results[i].download}\n`
+  }
+  const fileCurrentStat = `/searches/searchID:${lastSearch.id}-searchPhrase:${lastSearch.query.toUpperCase()}.csv`
+  await fs.writeFile(path.join(process.env.PWD, 'public', `${fileCurrentStat}`), stringStat)
+
+  // ! Отправляю на фронт ответ
   res.sendStatus(200)
 })
 

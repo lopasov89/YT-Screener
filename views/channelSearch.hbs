@@ -1,0 +1,22 @@
+<script defer src="/js/channelSearch.js"></script>
+{{!-- <script defer src="/js/deleteVideo.js"></script> --}}
+<h1>Channel Search</h1>
+
+<form id="formSearch">
+<input class="form-control" name="query" type="text" placeholder="Search phrase" aria-label="default input example" required>
+<br>
+<input class="form-control" name="amount" type="text" placeholder="Number of results (default - 5, max - 50)" aria-label="default input example">
+<br>
+<label>Select order to</label>
+<select required name="order" class="form-select" aria-label="Default select example">
+  <option selected>viewCount</option>
+  <option value="date">date</option>
+  <option value="rating">rating</option>
+  <option value="title">title</option>
+  <option value="relevance">relevance</option>
+</select> <br>
+<button type="submit" id="ytBtn" class="btn btn-info">Get statistics</button>
+</form>
+<br>
+<br>
+<div id="ytStat" class="my-4 row"></div>

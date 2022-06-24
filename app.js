@@ -12,7 +12,9 @@ const dbCheck = require('./db/dbCheck') // подключение скрипта
 // ! Импортируем созданные в отдельный файлах роуты.
 const indexRouter = require('./routes/index')
 const userRouter = require('./routes/user')
-const searchRouter = require('./routes/search')
+const videoRouter = require('./routes/videos')
+const channelRouter = require('./routes/channels')
+const historyRouter = require('./routes/history')
 
 // ! Инициализируем приложение
 const app = express() // создали экземпляр сервера
@@ -56,7 +58,9 @@ app.use((req, res, next) => {
 // ! Подключаем обработку запросов
 app.use('/', indexRouter)
 app.use('/user', userRouter)
-app.use('/search', searchRouter)
+app.use('/videos', videoRouter)
+app.use('/channels', channelRouter)
+app.use('/history', historyRouter)
 
 // ! Обработка ненайденных страниц
 // Если HTTP-запрос дошёл до этой строчки, значит ни один из ранее встречаемых рутов не ответил на запрос.

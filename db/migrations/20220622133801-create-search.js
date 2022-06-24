@@ -17,6 +17,9 @@ module.exports = {
       order: {
         type: Sequelize.STRING
       },
+      link: {
+        type: Sequelize.STRING
+      },
       user_id: {
         type: Sequelize.INTEGER,
         references: {

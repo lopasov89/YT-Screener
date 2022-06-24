@@ -1,0 +1,20 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Search phrase</th>
+      <th scope="col">Date</th>
+      <th scope="col">Download</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each allSearches}}
+    <tr>
+      <th scope="row">{{this.id}}</th>
+      <td>{{this.query}}</td>
+      <td>{{this.createdAt}}</td>
+      <td><a href="{{this.link}}">download link</a></td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
