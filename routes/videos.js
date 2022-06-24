@@ -18,6 +18,7 @@ router.post('/', async (req, res) => {
 
   // ! Заносим в базу поиск
   const currentSearch = await Search.create({
+    type: 'VIDEO',
     query,
     amount,
     order,
@@ -34,7 +35,7 @@ router.post('/', async (req, res) => {
       views: item.views,
       likes: item.likes,
       comments: item.comments,
-      download: item.snippet.publishedAt.slice(0, 10),
+      created: item.snippet.publishedAt.slice(0, 10),
       search_id: currentSearch.id,
     })
   }
@@ -47,7 +48,7 @@ router.post('/', async (req, res) => {
     if (i === 0) {
       stringStat += 'Video ID; Title; URL; Views; Likes; Comments; Download \n'
     }
-    stringStat += `${results[i].videoId}; ${results[i].title}; ${results[i].url}; ${results[i].views}; ${results[i].likes}; ${results[i].comments}; ${results[i].download}\n`
+    stringStat += `${results[i].videoId}; ${results[i].title}; ${results[i].url}; ${results[i].views}; ${results[i].likes}; ${results[i].comments}; ${results[i].created}\n`
   }
 
   const fileCurrentStat = `/searches/searchID:${currentSearch.id}-searchPhrase:${currentSearch.query.toUpperCase()}.csv`
@@ -76,7 +77,7 @@ router.delete('/', async (req, res) => {
     if (i === 0) {
       stringStat += 'Video ID; Title; URL; Views; Likes; Comments; Download \n'
     }
-    stringStat += `${results[i].videoId}; ${results[i].title}; ${results[i].url}; ${results[i].views}; ${results[i].likes}; ${results[i].comments}; ${results[i].download}\n`
+    stringStat += `${results[i].videoId}; ${results[i].title}; ${results[i].url}; ${results[i].views}; ${results[i].likes}; ${results[i].comments}; ${results[i].created}\n`
   }
   const fileCurrentStat = `/searches/searchID:${lastSearch.id}-searchPhrase:${lastSearch.query.toUpperCase()}.csv`
   await fs.writeFile(path.join(process.env.PWD, 'public', `${fileCurrentStat}`), stringStat)

@@ -5,7 +5,7 @@ ytStatBlock?.addEventListener('click', async (event) => {
   const { id } = event.target.dataset
 
   if (id) {
-    const response = await fetch('/videos', {
+    const response = await fetch('/channels', {
       method: 'DELETE',
       headers: {
         'Content-type': 'application/json',

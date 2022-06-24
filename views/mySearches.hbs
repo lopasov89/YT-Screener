@@ -2,6 +2,7 @@
   <thead>
     <tr>
       <th scope="col">ID</th>
+      <th scope="col">Type</th>
       <th scope="col">Search phrase</th>
       <th scope="col">Date</th>
       <th scope="col">Download</th>
@@ -11,6 +12,7 @@
     {{#each allSearches}}
     <tr>
       <th scope="row">{{this.id}}</th>
+      <td>{{this.type}}</td>
       <td>{{this.query}}</td>
       <td>{{this.createdAt}}</td>
       <td><a href="{{this.link}}">download link</a></td>

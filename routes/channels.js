@@ -18,6 +18,7 @@ router.post('/', async (req, res) => {
 
   // ! Заносим в базу поиск
   const currentSearch = await Search.create({
+    type: 'CHANNEL',
     query,
     amount,
     order,
@@ -29,12 +30,12 @@ router.post('/', async (req, res) => {
   for await (let item of items) {
     await Result.create({
       title: item.snippet.title,
-      videoId: item.id.videoId,
-      url: `https://www.youtube.com/watch?v=${item.id.videoId}`,
+      channelId: item.id.channelId,
+      url: `https://www.youtube.com/c/${item.customUrl}`,
       views: item.views,
-      likes: item.likes,
-      comments: item.comments,
-      download: item.snippet.publishedAt.slice(0, 10),
+      subscribers: item.subscribers,
+      videos: item.videos,
+      created: item.snippet.publishedAt.slice(0, 10),
       search_id: currentSearch.id,
     })
   }
@@ -45,9 +46,9 @@ router.post('/', async (req, res) => {
   let stringStat = ''
   for (let i = 0; i < results.length; i++) {
     if (i === 0) {
-      stringStat += 'Video ID; Title; URL; Views; Likes; Comments; Download \n'
+      stringStat += 'Channel ID; Title; URL; Subscribers; Videos; Views; Created \n'
     }
-    stringStat += `${results[i].videoId}; ${results[i].title}; ${results[i].url}; ${results[i].views}; ${results[i].likes}; ${results[i].comments}; ${results[i].download}\n`
+    stringStat += `${results[i].channelId}; ${results[i].title}; ${results[i].url}; ${results[i].subscribers}; ${results[i].videos}; ${results[i].views}; ${results[i].created}\n`
   }
 
   const fileCurrentStat = `/searches/searchID:${currentSearch.id}-searchPhrase:${currentSearch.query.toUpperCase()}.csv`
@@ -65,19 +66,20 @@ router.delete('/', async (req, res) => {
   const lastSearch = allSearches[allSearches.length - 1]
 
   // ! Нахожу нужный результат и удаляю из таблицы
-  const deleteCard = await Result.findOne({ where: { videoId: id, search_id: lastSearch.id } })
+  const deleteCard = await Result.findOne({ where: { channelId: id, search_id: lastSearch.id } })
   deleteCard.destroy()
 
   // ! Перезаписываю данные в текущем отчете
   const results = await Result.findAll(({ where: { search_id: lastSearch.id }, raw: true }))
 
   let stringStat = ''
-  for (let i = 0; i < results.length; i++) {
+  for (let i = 0; i <= results.length; i++) {
     if (i === 0) {
-      stringStat += 'Video ID; Title; URL; Views; Likes; Comments; Download \n'
+      stringStat += 'Channel ID; Title; URL; Subscribers; Videos; Views; Created \n'
     }
-    stringStat += `${results[i].videoId}; ${results[i].title}; ${results[i].url}; ${results[i].views}; ${results[i].likes}; ${results[i].comments}; ${results[i].download}\n`
+    stringStat += `${results[i].channelId}; ${results[i].title}; ${results[i].url}; ${results[i].subscribers}; ${results[i].videos}; ${results[i].views}; ${results[i].created}\n`
   }
+
   const fileCurrentStat = `/searches/searchID:${lastSearch.id}-searchPhrase:${lastSearch.query.toUpperCase()}.csv`
   await fs.writeFile(path.join(process.env.PWD, 'public', `${fileCurrentStat}`), stringStat)
 

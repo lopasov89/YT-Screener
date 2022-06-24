@@ -18,11 +18,14 @@ module.exports = (sequelize, DataTypes) => {
   Result.init({
     title: DataTypes.STRING,
     videoId: DataTypes.STRING,
+    channelId: DataTypes.STRING,
     url: DataTypes.STRING,
     views: DataTypes.STRING,
     likes: DataTypes.STRING,
     comments: DataTypes.STRING,
-    download: DataTypes.STRING,
+    subscribers: DataTypes.STRING,
+    videos: DataTypes.STRING,
+    created: DataTypes.STRING,
     search_id: DataTypes.INTEGER,
   }, {
     sequelize,

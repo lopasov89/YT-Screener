@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Search.init({
+    type: DataTypes.STRING,
     query: DataTypes.STRING,
     amount: DataTypes.INTEGER,
     order: DataTypes.STRING,

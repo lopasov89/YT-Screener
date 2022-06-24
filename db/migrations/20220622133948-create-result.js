@@ -14,6 +14,9 @@ module.exports = {
       videoId: {
         type: Sequelize.STRING
       },
+      channelId: {
+        type: Sequelize.STRING
+      },
       url: {
         type: Sequelize.STRING
       },
@@ -26,7 +29,13 @@ module.exports = {
       comments: {
         type: Sequelize.STRING
       },
-      download: {
+      subscribers: {
+        type: Sequelize.STRING
+      },
+      videos: {
+        type: Sequelize.STRING
+      },
+      created: {
         type: Sequelize.STRING
       },
       search_id: {

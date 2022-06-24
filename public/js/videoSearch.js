@@ -1,4 +1,3 @@
-// console.log('Клиентский скрипт поиска')
 // ! Находим нашу форму
 const ytFormSearch = document.querySelector('#formSearch')
 
@@ -29,7 +28,6 @@ ytFormSearch?.addEventListener('submit', async (event) => {
 
   // ! Получаем ответ от сервера Youtube
   const resultToSearch = await responseToSearch.json()
-  // console.log('resultToSearch1===>', resultToSearch)
 
   // ! Дальше нужно собрать статистику по каждому видео + отрисовать карточки
 
@@ -40,7 +38,7 @@ ytFormSearch?.addEventListener('submit', async (event) => {
 
       // ! Получаем ответ от сервера Youtube
       const resultToStatistic = await responseToStatistic.json()
-      // console.log(resultToStatistic);
+
       // ! Добавляем в объекты с видео данные о статистике
       resultToSearch.items[i].views = resultToStatistic.items[0].statistics.viewCount
       resultToSearch.items[i].likes = resultToStatistic.items[0].statistics.likeCount || '0'
