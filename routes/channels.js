@@ -73,12 +73,15 @@ router.delete('/', async (req, res) => {
   const results = await Result.findAll(({ where: { search_id: lastSearch.id }, raw: true }))
 
   let stringStat = ''
-  for (let i = 0; i <= results.length; i++) {
-    if (i === 0) {
-      stringStat += 'Channel ID; Title; URL; Subscribers; Videos; Views; Created \n'
-    }
-    stringStat += `${results[i].channelId}; ${results[i].title}; ${results[i].url}; ${results[i].subscribers}; ${results[i].videos}; ${results[i].views}; ${results[i].created}\n`
-  }
+  // for (let i = 0; i <= results.length; i++) {
+  //   if (i === 0) {
+  //     stringStat += 'Channel ID; Title; URL; Subscribers; Videos; Views; Views \n'
+  //   }
+  //   stringStat += `${results[i].channelId}; ${results[i].title}; ${results[i].url}; ${results[i].subscribers}; ${results[i].videos}; ${results[i].views}; ${results[i].created}\n`
+  // }
+  results.forEach((element) => {
+    stringStat += `Channel ID: ${element.channelId}, Title: ${element.title}, URL: ${element.url}, Subscribers: ${element.subscribers}/${element.scetch}, Videos: ${element.videos}, Views: ${element.views}, Views: ${element.created}\n`
+  })
 
   const fileCurrentStat = `/searches/searchID:${lastSearch.id}-searchPhrase:${lastSearch.query.toUpperCase()}.csv`
   await fs.writeFile(path.join(process.env.PWD, 'public', `${fileCurrentStat}`), stringStat)
