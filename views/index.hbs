@@ -1,0 +1,24 @@
+{{#if userId}}
+<h1>Choose Search</h1>
+<div id="choose-search" class="my-2 row">
+<div class="card text-center" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">Video search</h5>
+    <p class="card-text">Helps to find videos on certain topics and view statistics on them.</p>
+    <a href="/videos" class="btn btn-primary">Find videos</a>
+  </div>
+</div>
+<div class="card text-center" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">Channel search</h5>
+    <p class="card-text">Helps to find channels on certain topics and view statistics on them..</p>
+    <a href="/channels" class="btn btn-primary">Find channels</a>
+  </div>
+</div>
+</div>
+{{else}}
+<h1>YT Screener greetings</h1>
+ {{/if}}
+<div id="video-tutorial">
+  <iframe width="780" height="439" src="https://www.youtube.com/embed/AFca2KkxBH0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>

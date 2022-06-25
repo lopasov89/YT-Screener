@@ -28,7 +28,7 @@ ytFormSearch?.addEventListener('submit', async (event) => {
 
   // ! Получаем ответ от сервера Youtube
   const resultToSearch = await responseToSearch.json()
-
+  console.log('resultToSearch==>', resultToSearch);
   // ! Дальше нужно собрать статистику по каждому видео + отрисовать карточки
 
   if (resultToSearch.items && resultToSearch.items.length > 0) {
@@ -49,7 +49,9 @@ ytFormSearch?.addEventListener('submit', async (event) => {
       <div class="row g-0">
         <div class="col-md-4">
           <a href="https://www.youtube.com/watch?v=${resultToSearch.items[i].id.videoId}" target="_blank"> <img src="${resultToSearch.items[i].snippet.thumbnails.medium.url}" class="img-fluid rounded-start mt-3" alt="${resultToSearch.items[i].snippet.title}"></a>
+          <div>
           <button data-id=${resultToSearch.items[i].id.videoId} type="button" class="btn btn-danger deleteButton mt-2">Delete</button>
+          </div>
         </div>
         <div class="col-md-8">
           <div class="card-body">

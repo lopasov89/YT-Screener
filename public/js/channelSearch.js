@@ -57,7 +57,9 @@ ytFormSearch?.addEventListener('submit', async (event) => {
         <div class="col-md-4">
         ${link}
            <img src="/images/youtube.jpeg" class="img-fluid rounded-start mt-3" alt="${resultToSearch.items[i].snippet.title}"></a>
+           <div>
           <button data-id=${resultToSearch.items[i].id.channelId} type="button" class="btn btn-danger deleteButton mt-2">Delete</button>
+          </div>
         </div>
         <div class="col-md-8">
           <div class="card-body">
@@ -88,7 +90,6 @@ ytFormSearch?.addEventListener('submit', async (event) => {
   // ! Получаем ответ с бэка
   if (response.ok) {
     const result = await response.json()
-    
     const { fileCurrentStat } = result
     // ! Добавляем кнопку скачивания результатов текущего поиска
     const linkList = document.createElement('a')
@@ -98,6 +99,6 @@ ytFormSearch?.addEventListener('submit', async (event) => {
     linkList.classList.add('btn-success')
     linkList.innerText = 'Save statistics(csv)'
     // ! Вставляем кнопку на страницу
-    ytStat.before(linkList)
+    ytStat.after(linkList)
   }
 })

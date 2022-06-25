@@ -36,16 +36,34 @@ body {
   margin-bottom: 10px;
 }
 
-H1 { 
+.my-2 {
+  justify-content: space-evenly;
+  margin-top: 25px;
+}
+
+.text-center {
+  width: 45%;
+  margin: 15px;
+}
+
+#video-tutorial {
+  margin-top: 35px;
+}
+
+H1, H2 { 
   text-align: center;
   margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 @media screen and (max-width: 600px) {
-  #formSearch, #formLogin, #formRegister {
+  #formSearch, #formLogin, #formRegister, iframe {
       width: 90%;
   }
- 
 }
 
-
+@media screen and (max-width: 800px) {
+  iframe {
+      width: 90%;
+  }
+}
