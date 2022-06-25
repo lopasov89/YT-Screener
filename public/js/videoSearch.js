@@ -45,15 +45,15 @@ ytFormSearch?.addEventListener('submit', async (event) => {
       resultToSearch.items[i].comments = resultToStatistic.items[0].statistics.commentCount || '0'
 
       // ! Отрисовываем карточку по каждому видео
-      const resSearch = `<div class="card mb-3 ${resultToSearch.items[i].id.videoId}" style="max-width: 540px;">
+      const resSearch = `<div class="card mt-3 mx-auto ${resultToSearch.items[i].id.videoId}" style="max-width: 540px;">
       <div class="row g-0">
         <div class="col-md-4">
-          <a href="https://www.youtube.com/watch?v=${resultToSearch.items[i].id.videoId}" target="_blank"> <img src="${resultToSearch.items[i].snippet.thumbnails.medium.url}" class="img-fluid rounded-start" alt="${resultToSearch.items[i].snippet.title}"></a>
-          <button data-id=${resultToSearch.items[i].id.videoId} type="button" class="btn btn-danger deleteButton">Delete</button>
+          <a href="https://www.youtube.com/watch?v=${resultToSearch.items[i].id.videoId}" target="_blank"> <img src="${resultToSearch.items[i].snippet.thumbnails.medium.url}" class="img-fluid rounded-start mt-3" alt="${resultToSearch.items[i].snippet.title}"></a>
+          <button data-id=${resultToSearch.items[i].id.videoId} type="button" class="btn btn-danger deleteButton mt-2">Delete</button>
         </div>
         <div class="col-md-8">
           <div class="card-body">
-            <h5 class="card-title">${resultToSearch.items[i].snippet.title}</h5> <br>
+          <a href="https://www.youtube.com/watch?v=${resultToSearch.items[i].id.videoId}" target="_blank"><h5 class="card-title">${resultToSearch.items[i].snippet.title}</h5></a> <br>
             <p class="card-text">Views: ${resultToStatistic.items[0].statistics.viewCount}</p>
             <p class="card-text">Likes: ${resultToStatistic.items[0].statistics.likeCount || '0'}</p>
             <p class="card-text">Comments: ${resultToStatistic.items[0].statistics.commentCount || '0'}</p>
@@ -85,9 +85,9 @@ ytFormSearch?.addEventListener('submit', async (event) => {
     linkList.href = fileCurrentStat
     linkList.id = 'btn-save'
     linkList.classList.add('btn')
-    linkList.classList.add('btn-info')
+    linkList.classList.add('btn-success')
     linkList.innerText = 'Save statistics(csv)'
     // ! Вставляем кнопку на страницу
-    ytStat.before(linkList)
+    ytStat.after(linkList)
   }
 })

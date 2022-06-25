@@ -14,7 +14,7 @@ ytStatBlock?.addEventListener('click', async (event) => {
     })
 
     if (response.ok) {
-      const card = event.target.closest('.mb-3') // нашли ближайшего родителя с атрибутом .card для события клик
+      const card = event.target.closest('.mt-3') // нашли ближайшего родителя с атрибутом .card для события клик
       card.remove() // удалили родителя = конкретную карточку
     }
   }

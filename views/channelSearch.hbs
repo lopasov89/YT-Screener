@@ -2,13 +2,14 @@
 <script defer src="/js/deleteChannel.js"></script>
 <h1>Channel Search</h1>
 
+<div class="form">
 <form id="formSearch">
-<input class="form-control" name="query" type="text" placeholder="Search phrase" aria-label="default input example" required>
+<input class="input form-control mx-auto mt-5" name="query" type="text" placeholder="Search phrase" aria-label="default input example" required>
 <br>
-<input class="form-control" name="amount" type="text" placeholder="Number of results (default - 5, max - 50)" aria-label="default input example">
+<input class="input form-control mx-auto" name="amount" type="text" placeholder="Number of results (default - 5, max - 50)" aria-label="default input example">
 <br>
 <label>Select order to</label>
-<select required name="order" class="form-select" aria-label="Default select example">
+<select required name="order" class="input form-select mx-auto" aria-label="Default select example">
   <option selected>viewCount</option>
   <option value="date">date</option>
   <option value="rating">rating</option>
@@ -17,6 +18,7 @@
 </select> <br>
 <button type="submit" id="ytBtn" class="btn btn-info">Get statistics</button>
 </form>
+</div>
 <br>
 <br>
 <div id="ytStat" class="my-4 row"></div>

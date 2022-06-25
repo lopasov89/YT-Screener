@@ -1,20 +1,15 @@
 <div>
-  <h2>Register Page</h2>
+  <h1>Register Page</h1>
 </div>
 
-
-<form method="POST" action="/user/register">
-<div class="form-floating mb-3">
-  <input type="text" name="name" required class="form-control" placeholder="Your name">
-  <label for="floatingInput">Name</label>
-</div> <br>
-<div class="form-floating mb-3">
-  <input type="email" required name="email" class="form-control" placeholder="name@example.com">
-  <label>Email address</label>
-</div> <br>
-<div class="form-floating">
-  <input type="password" name="password" required class="form-control" placeholder="Password">
-  <label>Password</label>
-</div> <br>
-<button type="submit" class="btn btn-primary btn-lg">Зарегистрироваться</button>
+<div class="form">
+<form id="formRegister" method="POST" action="/user/register">
+  <input type="text" name="name" required class="input form-control mx-auto mt-5" placeholder="Your name" aria-label="name">
+<br>
+  <input type="email" required name="email" class="input form-control mx-auto" placeholder="Email address" aria-label="email">
+<br>
+  <input type="password" name="password" required class="input form-control mx-auto" placeholder="Password" aria-label="password">
+<br>
+<button type="submit" class="btn btn-primary btn-lg">Registered</button>
 </form>
+</div>

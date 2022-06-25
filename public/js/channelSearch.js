@@ -28,7 +28,6 @@ ytFormSearch?.addEventListener('submit', async (event) => {
 
   // ! Получаем ответ от сервера Youtube
   const resultToSearch = await responseToSearch.json()
-
   // ! Дальше нужно собрать статистику по каждому видео + отрисовать карточки
 
   if (resultToSearch.items && resultToSearch.items.length > 0) {
@@ -40,22 +39,30 @@ ytFormSearch?.addEventListener('submit', async (event) => {
       const resultToStatistic = await responseToStatistic.json()
 
       // ! Добавляем в объекты с видео данные о статистике
-      resultToSearch.items[i].subscribers = resultToStatistic.items[0].statistics.subscriberCount
+      resultToSearch.items[i].subscribers = resultToStatistic.items[0].statistics.subscriberCount || '0'
       resultToSearch.items[i].videos = resultToStatistic.items[0].statistics.videoCount || '0'
       resultToSearch.items[i].views = resultToStatistic.items[0].statistics.viewCount || '0'
       resultToSearch.items[i].customUrl = resultToStatistic.items[0].snippet.customUrl || resultToSearch.items[i].id.channelId
 
+      let link
+      if (resultToStatistic.items[0].snippet.customUrl) {
+        link = `<a href="https://www.youtube.com/c/${resultToStatistic.items[0].snippet.customUrl}" target="_blank">`
+      } else {
+        link = ''
+      }
+
       // ! Отрисовываем карточку по каждому видео
-      const resSearch = `<div class="card mb-3 ${resultToSearch.items[i].id.channelId}" style="max-width: 540px;">
+      const resSearch = `<div class="card mt-3 mx-auto ${resultToSearch.items[i].id.channelId}" style="max-width: 540px;">
       <div class="row g-0">
         <div class="col-md-4">
-          <a href="https://www.youtube.com/c/${resultToStatistic.items[0].snippet.customUrl}" target="_blank"> <img src="/images/youtube-logo.png" class="img-fluid rounded-start" alt="${resultToSearch.items[i].snippet.title}"></a>
-          <button data-id=${resultToSearch.items[i].id.channelId} type="button" class="btn btn-danger deleteButton">Delete</button>
+        ${link}
+           <img src="/images/youtube.jpeg" class="img-fluid rounded-start mt-3" alt="${resultToSearch.items[i].snippet.title}"></a>
+          <button data-id=${resultToSearch.items[i].id.channelId} type="button" class="btn btn-danger deleteButton mt-2">Delete</button>
         </div>
         <div class="col-md-8">
           <div class="card-body">
-            <h5 class="card-title">${resultToSearch.items[i].snippet.title}</h5> <br>
-            <p class="card-text">Subscribers: ${resultToStatistic.items[0].statistics.subscriberCount}</p>
+          ${link} <h5 class="card-title">${resultToSearch.items[i].snippet.title}</h5></a> <br>
+            <p class="card-text">Subscribers: ${resultToStatistic.items[0].statistics.subscriberCount || '0'}</p>
             <p class="card-text">Videos: ${resultToStatistic.items[0].statistics.videoCount || '0'}</p>
             <p class="card-text">Views: ${resultToStatistic.items[0].statistics.viewCount || '0'}</p>
             <p class="card-text"><small class="text-muted">Created at: ${resultToSearch.items[i].snippet.publishedAt.slice(0, 10)}</small></p>
@@ -88,7 +95,7 @@ ytFormSearch?.addEventListener('submit', async (event) => {
     linkList.href = fileCurrentStat
     linkList.id = 'btn-save'
     linkList.classList.add('btn')
-    linkList.classList.add('btn-info')
+    linkList.classList.add('btn-success')
     linkList.innerText = 'Save statistics(csv)'
     // ! Вставляем кнопку на страницу
     ytStat.before(linkList)

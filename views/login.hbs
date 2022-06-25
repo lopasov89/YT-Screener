@@ -1,15 +1,15 @@
 <div>
-  <h2>Login Page</h2>
+  <h1>Login Page</h1>
 </div>
 
-<form method="POST" action="/user/login">
-<div class="form-floating mb-3">
-  <input type="email" required name="email" class="form-control" placeholder="name@example.com">
-  <label>Email address</label>
-</div> <br>
-<div class="form-floating">
-  <input type="password" name="password" required class="form-control" placeholder="Password">
-  <label>Password</label>  
-</div> <br>
-<button type="submit" class="btn btn-primary btn-lg">Войти</button>
+<div class="form">
+<form id="formLogin" method="POST" action="/user/login">
+  <input placeholder="Email address" type="email" required name="email" class="input form-control mx-auto mt-5" aria-label="email">
+<br>
+  <input placeholder="Password" type="password" name="password" required class="input form-control mx-auto" aria-label="password">
+<br>
+<button type="submit" class="btn btn-primary btn-lg">Login</button>
 </form>
+<br>
+OR <a href="/user/register">Registered</a>
+</div>
