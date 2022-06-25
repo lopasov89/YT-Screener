@@ -3,8 +3,9 @@ const router = require('express').Router()
 const fs = require('fs').promises
 const path = require('path') // подключили модуль path
 const { Search, Result } = require('../db/models')
+const { checkIsNotSession } = require('../middlewares/check.middleware')
 
-router.get('/', async (req, res) => {
+router.get('/', checkIsNotSession, async (req, res) => {
   res.render('videoSearch')
 })
 

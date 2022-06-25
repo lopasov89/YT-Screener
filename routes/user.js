@@ -2,7 +2,7 @@ const router = require('express').Router()
 const bcrypt = require('bcrypt')
 const { User } = require('../db/models')
 const { checkIsSession, checkIsNotSession } = require('../middlewares/check.middleware')
-const mailer = require('../middlewares/mailer.middleware');
+const mailer = require('../middlewares/mailer.middleware')
 
 const saltRounds = 10
 
