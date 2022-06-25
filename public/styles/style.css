@@ -46,8 +46,13 @@ body {
   margin: 15px;
 }
 
+.btn-lg {
+  width: 200px;
+}
+
 #video-tutorial {
   margin-top: 35px;
+  margin-bottom: 35px;
 }
 
 H1, H2 { 

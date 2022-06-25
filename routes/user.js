@@ -98,7 +98,7 @@ router.post('/login', async (req, res) => {
 router.get('/logout', checkIsNotSession, (req, res) => {
   req.session.destroy() // ! убиваем сессию
   res.clearCookie(process.env.COOKIE_NAME) // ! убираем из куки id сессии
-  res.redirect('/user/login')
+  res.redirect('/')
 })
 
 module.exports = router
