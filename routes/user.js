@@ -23,7 +23,7 @@ router.post('/register', async (req, res) => {
     // если юзер с такой почтой найден - то показать страницу с ошибкой
     if (user) {
       return res.render('error', {
-        message: 'E-mail уже существует',
+        message: 'Email already exists',
         error: {},
       })
     }
@@ -38,12 +38,12 @@ router.post('/register', async (req, res) => {
     // ! тут начинается логика отправки сообщения
     const message = {
       to: email,
-      subject: 'Добро пожаловать в сервис YT Screener',
+      subject: 'Welcome to YT Screener Service',
       html: `
-        <h2>${name.toUpperCase()}, поздравляем, Вы успешно зарегистрировались на нашем сайте!</h2>
+        <h2>${name.toUpperCase()}, congratulations, you have successfully registered on our website!</h2>
         
-        <i>Ваш логин: ${email}</i>
-        <i>Ваш пароль: ${password}</i>
+        <i>Your login: ${email}</i>
+        <i>Your password: ${password}</i>
         `,
     }
     mailer(message)
@@ -51,7 +51,7 @@ router.post('/register', async (req, res) => {
     res.redirect('/')
   } catch (error) {
     return res.render('error', {
-      message: 'Не удалось зарегистрироваться',
+      message: 'Failed to register',
       error: {},
     })
   }
@@ -72,7 +72,7 @@ router.post('/login', async (req, res) => {
     // если юзера с таким эмайлом нет еще в базе то показать страницу с ошибкой
     if (!user) {
       return res.render('error', {
-        message: 'Неверный e-mail',
+        message: 'Invalid email',
         error: {},
       })
     }
@@ -81,7 +81,7 @@ router.post('/login', async (req, res) => {
     // если пароли не совпали то сгенерировать ошибку
     if (!isValidPass) {
       return res.render('error', {
-        message: 'Неверный пароль',
+        message: 'Invalid password',
         error: {},
       })
     }
