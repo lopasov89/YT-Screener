@@ -38,6 +38,9 @@ ytFormSearch?.addEventListener('submit', async (event) => {
       // ! Получаем ответ от сервера Youtube
       const resultToStatistic = await responseToStatistic.json()
 
+      // ! Очищаем поля ввода формы
+      ytFormSearch.reset()
+
       // ! Добавляем в объекты с видео данные о статистике
       resultToSearch.items[i].subscribers = resultToStatistic.items[0].statistics.subscriberCount || '0'
       resultToSearch.items[i].videos = resultToStatistic.items[0].statistics.videoCount || '0'

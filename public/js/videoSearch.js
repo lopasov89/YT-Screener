@@ -28,9 +28,12 @@ ytFormSearch?.addEventListener('submit', async (event) => {
 
   // ! Получаем ответ от сервера Youtube
   const resultToSearch = await responseToSearch.json()
-  console.log('resultToSearch==>', resultToSearch);
-  // ! Дальше нужно собрать статистику по каждому видео + отрисовать карточки
+  console.log('resultToSearch==>', resultToSearch)
 
+  // ! Очищаем поля ввода формы
+  ytFormSearch.reset()
+
+  // ! Дальше нужно собрать статистику по каждому видео + отрисовать карточки
   if (resultToSearch.items && resultToSearch.items.length > 0) {
     for (let i = 0; i < resultToSearch.items.length; i++) {
       // ! Отправляем запрос по API для получения статистики по каждому видео

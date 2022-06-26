@@ -12,7 +12,8 @@ module.exports = {
         type: Sequelize.STRING
       },
       query: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       amount: {
         type: Sequelize.INTEGER
