@@ -22,33 +22,32 @@ ytFormSearch?.addEventListener('submit', async (event) => {
   const query = event.target.query.value
   const amount = event.target.amount.value || 5
   const order = event.target.order.value
+  try {
+    // ! Отправляем запрос на поиск подходящих видео
+    const responseToSearch = await fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&q=${query}&maxResults=${amount}&type=video&key=${youtubeKey}&safeSearch=none&order=${order}`)
 
-  // ! Отправляем запрос на поиск подходящих видео
-  const responseToSearch = await fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&q=${query}&maxResults=${amount}&type=video&key=${youtubeKey}&safeSearch=none&order=${order}`)
+    // ! Получаем ответ от сервера Youtube
+    const resultToSearch = await responseToSearch.json()
 
-  // ! Получаем ответ от сервера Youtube
-  const resultToSearch = await responseToSearch.json()
-  console.log('resultToSearch==>', resultToSearch)
+    // ! Очищаем поля ввода формы
+    ytFormSearch.reset()
 
-  // ! Очищаем поля ввода формы
-  ytFormSearch.reset()
+    // ! Дальше нужно собрать статистику по каждому видео + отрисовать карточки
+    if (resultToSearch.items && resultToSearch.items.length > 0) {
+      for (let i = 0; i < resultToSearch.items.length; i++) {
+        // ! Отправляем запрос по API для получения статистики по каждому видео
+        const responseToStatistic = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${resultToSearch.items[i].id.videoId}&key=${youtubeKey}`)
 
-  // ! Дальше нужно собрать статистику по каждому видео + отрисовать карточки
-  if (resultToSearch.items && resultToSearch.items.length > 0) {
-    for (let i = 0; i < resultToSearch.items.length; i++) {
-      // ! Отправляем запрос по API для получения статистики по каждому видео
-      const responseToStatistic = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${resultToSearch.items[i].id.videoId}&key=${youtubeKey}`)
+        // ! Получаем ответ от сервера Youtube
+        const resultToStatistic = await responseToStatistic.json()
 
-      // ! Получаем ответ от сервера Youtube
-      const resultToStatistic = await responseToStatistic.json()
+        // ! Добавляем в объекты с видео данные о статистике
+        resultToSearch.items[i].views = resultToStatistic.items[0].statistics.viewCount
+        resultToSearch.items[i].likes = resultToStatistic.items[0].statistics.likeCount || '0'
+        resultToSearch.items[i].comments = resultToStatistic.items[0].statistics.commentCount || '0'
 
-      // ! Добавляем в объекты с видео данные о статистике
-      resultToSearch.items[i].views = resultToStatistic.items[0].statistics.viewCount
-      resultToSearch.items[i].likes = resultToStatistic.items[0].statistics.likeCount || '0'
-      resultToSearch.items[i].comments = resultToStatistic.items[0].statistics.commentCount || '0'
-
-      // ! Отрисовываем карточку по каждому видео
-      const resSearch = `<div class="card mt-3 mx-auto ${resultToSearch.items[i].id.videoId}" style="max-width: 540px;">
+        // ! Отрисовываем карточку по каждому видео
+        const resSearch = `<div class="card mt-3 mx-auto ${resultToSearch.items[i].id.videoId}" style="max-width: 540px;">
       <div class="row g-0">
         <div class="col-md-4">
           <a href="https://www.youtube.com/watch?v=${resultToSearch.items[i].id.videoId}" target="_blank"> <img src="${resultToSearch.items[i].snippet.thumbnails.medium.url}" class="img-fluid rounded-start mt-3" alt="${resultToSearch.items[i].snippet.title}"></a>
@@ -66,33 +65,36 @@ ytFormSearch?.addEventListener('submit', async (event) => {
           </div>
         </div>
       </div>`
-      ytStat.insertAdjacentHTML('beforeend', resSearch)
+        ytStat.insertAdjacentHTML('beforeend', resSearch)
+      }
     }
-  }
-  // ! Вытягиваем массив объектов результатов поиска
-  const { items } = resultToSearch
-  // ! Отправляем fetch для занесения поиска и результатов в базу
-  const response = await fetch('/videos', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      query, amount, order, items,
-    }),
-  })
-  // ! Получаем ответ с бэка
-  if (response.ok) {
-    const result = await response.json()
-    const { fileCurrentStat } = result
-    // ! Добавляем кнопку скачивания результатов текущего поиска
-    const linkList = document.createElement('a')
-    linkList.href = fileCurrentStat
-    linkList.id = 'btn-save'
-    linkList.classList.add('btn')
-    linkList.classList.add('btn-success')
-    linkList.innerText = 'Save statistics(csv)'
-    // ! Вставляем кнопку на страницу
-    ytStat.after(linkList)
+    // ! Вытягиваем массив объектов результатов поиска
+    const { items } = resultToSearch
+    // ! Отправляем fetch для занесения поиска и результатов в базу
+    const response = await fetch('/videos', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query, amount, order, items,
+      }),
+    })
+    // ! Получаем ответ с бэка
+    if (response.ok) {
+      const result = await response.json()
+      const { fileCurrentStat } = result
+      // ! Добавляем кнопку скачивания результатов текущего поиска
+      const linkList = document.createElement('a')
+      linkList.href = fileCurrentStat
+      linkList.id = 'btn-save'
+      linkList.classList.add('btn')
+      linkList.classList.add('btn-success')
+      linkList.innerText = 'Save statistics(csv)'
+      // ! Вставляем кнопку на страницу
+      ytStat.after(linkList)
+    }
+  } catch (error) {
+    console.log('error', error)
   }
 })
